@@ -30,13 +30,13 @@ size_t funcion_hash(const char *clave, size_t capacidad)
 	return hash % capacidad;
 }
 
-char *strdup(const char *s)
+char *copiar_clave(const char *original)
 {
-	char *d = malloc(strlen(s) + 1);
-	if (d == NULL)
+	char *copia = malloc(strlen(original) + 1);
+	if (copia == NULL)
 		return NULL;
-	strcpy(d, s);
-	return d;
+	strcpy(copia, original);
+	return copia;
 }
 
 hash_t *hash_crear(size_t capacidad)
@@ -74,13 +74,6 @@ bool rehash(hash_t *hash)
 		while (par) {
 			hash_insertar(hash_nuevo, par->clave, par->elemento,
 				      NULL);
-			par = par->siguiente;
-		}
-	}
-
-	for (size_t i = 0; i < hash->capacidad; i++) {
-		par_t *par = hash->tabla[i];
-		while (par) {
 			par_t *siguiente = par->siguiente;
 			free(par->clave);
 			free(par);
@@ -129,7 +122,7 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento,
 	if (!par)
 		return NULL;
 
-	par->clave = strdup(clave);
+	par->clave = copiar_clave(clave);
 
 	if (!par->clave) {
 		free(par);
