@@ -46,6 +46,9 @@ hash_t *hash_crear(size_t capacidad)
 	if (!hash)
 		return NULL;
 
+	if (capacidad < 3)
+		capacidad = 3;
+
 	hash->capacidad = capacidad;
 	hash->cantidad = 0;
 
